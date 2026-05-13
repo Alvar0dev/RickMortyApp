@@ -3,7 +3,6 @@ package com.example.rickmortyapp;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -32,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements ElementoAdapter.O
     private ElementoAdapter adaptador;
     private ArrayList<Elemento> listaElementos = new ArrayList<>();
     private ElementoDAO dao;
-    private Elemento elementoSeleccionado;
     private FloatingActionButton fab;
 
     @Override
@@ -45,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements ElementoAdapter.O
         recyclerView = findViewById(R.id.rv);
         fab = findViewById(R.id.fab);
 
-        // MODO HORIZONTAL EN GRID DE 2 COLUMNAS
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         } else {
@@ -54,18 +51,12 @@ public class MainActivity extends AppCompatActivity implements ElementoAdapter.O
 
         adaptador = new ElementoAdapter(listaElementos, this);
         recyclerView.setAdapter(adaptador);
+        
         cargarDatosDeInternet();
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ejecutarAccionBotonFlotante();
-            }
+        fab.setOnClickListener(view -> {
+            Toast.makeText(this, "Botón pulsado", Toast.LENGTH_SHORT).show();
         });
-    }
-
-    private void ejecutarAccionBotonFlotante() {
-        Toast.makeText(this, "Clic en el botón flotante", Toast.LENGTH_SHORT).show();
     }
 
     private void cargarDatosDeInternet() {
@@ -74,43 +65,44 @@ public class MainActivity extends AppCompatActivity implements ElementoAdapter.O
             public void onResponse(Call<ElementoResponse> call, Response<ElementoResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<Elemento> descargados = response.body().getelementos();
-                    listaElementos.clear();
-                    listaElementos.addAll(descargados);
                     adaptador.actualizarlista(descargados);
                 }
             }
 
             @Override
             public void onFailure(Call<ElementoResponse> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Error al cargar datos", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    public void onMeGustaClick(Elemento elemento) {
-        // Implementar lógica de me gusta si es necesario
     }
 
     @Override
     public void onFavoritoClick(Elemento elemento) {
         long id = dao.insertar(elemento);
         if (id != -1) {
-            Toast.makeText(this, "Guardado en favoritos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Guardado correctamente", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Ya está en favoritos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Ya existe en la base de datos", Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    public void onItemClick(View v) {
-        // Nota: Asegúrate de que elementoSeleccionado se asigne en algún lugar o usa el objeto del adaptador
-        if (elementoSeleccionado != null) {
-            Intent intent = new Intent(this, DetalleActivity.class);
-            intent.putExtra("elemento_id", elementoSeleccionado.getId());
-            intent.putExtra("elemento_nombre", elementoSeleccionado.getAtriString1());
-            intent.putExtra("elemento_status", elementoSeleccionado.getAtriString3());
-            startActivity(intent);
-        }
+    public void onItemClick(Elemento elemento) {
+        // 1. Creamos la intención hacia la pantalla de detalle
+        Intent intent = new Intent(this, DetalleActivity.class);
+
+// 2. Creamos un Bundle (el "contenedor" o paquete)
+        Bundle bundle = new Bundle();
+
+// 3. Metemos los datos dentro del paquete usando claves
+        bundle.putString("AtriString1", elemento.getAtriString1());
+        bundle.putString("AtriString2", elemento.getAtriString2());
+        bundle.putString("AtriString3", elemento.getAtriString3());
+
+// 4. Metemos el paquete completo dentro del Intent
+        intent.putExtras(bundle);
+
+// 5. Lanzamos la actividad
+        startActivity(intent);
     }
 }

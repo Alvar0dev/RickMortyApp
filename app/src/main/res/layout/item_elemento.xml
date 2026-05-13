@@ -2,31 +2,27 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/item_elemento"
+    android:id="@+id/item_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="10dp"
-    android:gravity="center_vertical">
-
-
-
+    android:padding="10dp">
 
     <ImageView
         android:id="@+id/tvString3"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/ic_launcher" />
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:src="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/tvString1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="Nombre"
+        android:layout_marginStart="16dp"
+        android:text="AtriString1"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -34,20 +30,14 @@
         app:layout_constraintStart_toEndOf="@+id/tvString3"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <TextView
         android:id="@+id/tvString2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="Estado"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="16dp"
+        android:text="AtriString2"
+        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/btnFavorito"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/tvString3"
         app:layout_constraintTop_toBottomOf="@+id/tvString1" />
 
@@ -56,13 +46,9 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="Favorito"
         android:src="@android:drawable/btn_star_big_on"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

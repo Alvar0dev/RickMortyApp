@@ -3,6 +3,7 @@ package com.example.rickmortyapp;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.core.graphics.Insets;
@@ -16,6 +17,7 @@ import com.example.rickmortyapp.bbdd.ElementoDAO;
 import com.example.rickmortyapp.adapter.ElementoAdapter;
 import com.example.rickmortyapp.menus.MenuToolbar;
 import com.example.rickmortyapp.modelo.Elemento;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class FavoritosActivity extends MenuToolbar implements ElementoAdapter.On
     private RecyclerView recyclerView;
     private ElementoAdapter adaptador;
     private ElementoDAO dao;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,17 +35,27 @@ public class FavoritosActivity extends MenuToolbar implements ElementoAdapter.On
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_favoritos);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        View mainView = findViewById(R.id.main);
+        if (mainView != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
+        }
 
         dao = new ElementoDAO(this);
         recyclerView = findViewById(R.id.rv2);
+        fab = findViewById(R.id.fab_add);
 
         configurarRecyclerView();
         refrescarLista();
+
+        if (fab != null) {
+            fab.setOnClickListener(v -> {
+                startActivity(new Intent(this, FormularioActivity.class));
+            });
+        }
     }
 
     private void configurarRecyclerView() {
@@ -56,12 +69,13 @@ public class FavoritosActivity extends MenuToolbar implements ElementoAdapter.On
     }
 
     private void refrescarLista() {
-        adaptador.actualizarlista(dao.obtenerTodos());
+        if (adaptador != null) {
+            adaptador.actualizarlista(dao.obtenerTodos());
+        }
     }
 
     @Override
     public void onModificarClick(Elemento elemento) {
-        // CORRECCIÓN: Usamos la clave "elemento" que es la que busca FormularioActivity
         Intent intent = new Intent(this, FormularioActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("elemento", elemento); 
@@ -73,7 +87,7 @@ public class FavoritosActivity extends MenuToolbar implements ElementoAdapter.On
     public void onBorrarClick(Elemento elemento) {
         dao.borrar(elemento.getAtriPK());
         refrescarLista();
-        Snackbar.make(findViewById(R.id.main), "Eliminado", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(R.id.main), "Eliminado de favoritos", Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
@@ -91,6 +105,6 @@ public class FavoritosActivity extends MenuToolbar implements ElementoAdapter.On
     @Override
     protected void onResume() {
         super.onResume();
-        refrescarLista(); // Refresca por si volvimos de modificar
+        refrescarLista();
     }
 }

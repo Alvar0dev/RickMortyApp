@@ -9,15 +9,12 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final int DB_VERSION = 3; 
     public static final String TABLE = "tabla_elementos";
 
-    // Nombres de columnas genéricos
     public static final String COL_PK = "atriPK";
     public static final String COL_INT1 = "atriInt1";
     public static final String COL_STRING1 = "atriString1";
     public static final String COL_STRING2 = "atriString2";
     public static final String COL_STRING3 = "atriString3";
     public static final String COL_STRING4 = "atriString4";
-    
-    // Columnas para ubicación
     public static final String COL_LAT = "latitud";
     public static final String COL_LON = "longitud";
 

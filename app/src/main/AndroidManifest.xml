@@ -16,6 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RickMortyApp">
+        
         <activity
             android:name=".FormularioActivity"
             android:exported="false" />
@@ -33,14 +34,13 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AQUI_PEGAR_LA_CLAVE_QUE_DE_EL_PROFESOR_O_TU_CLAVE" />
+            android:value="AQUI_TU_CLAVE" />
     </application>
 
 </manifest>

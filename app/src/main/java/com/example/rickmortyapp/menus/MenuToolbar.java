@@ -9,14 +9,16 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+// Imports corregidos a minúsculas y completos
+import com.example.rickmortyapp.R;
+import com.example.rickmortyapp.MainActivity;
 import com.example.rickmortyapp.FavoritosActivity;
 import com.example.rickmortyapp.FormularioActivity;
-import com.example.rickmortyapp.R;
 import com.example.rickmortyapp.UbiActivity;
 
 public abstract class MenuToolbar extends AppCompatActivity {
 
-    protected static int fontSizeLevel = 1; // 0: Pequeño, 1: Normal, 2: Grande
+    protected static int fontSizeLevel = 1; 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -29,7 +31,6 @@ public abstract class MenuToolbar extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_add) {
-            // Abrir formulario para crear elemento nuevo (sin extras)
             startActivity(new Intent(this, FormularioActivity.class));
             return true;
         } else if (id == R.id.action_exit) {
@@ -44,10 +45,6 @@ public abstract class MenuToolbar extends AppCompatActivity {
         } else if (id == R.id.action_ubi) {
             startActivity(new Intent(this, UbiActivity.class));
             return true;
-            // Boton extra
-//        } else if (id == R.id.action_favs) {
-//            startActivity(new Intent(this, FavoritosActivity.class));
-//            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -70,14 +67,14 @@ public abstract class MenuToolbar extends AppCompatActivity {
             case 1: mensaje = "Normal"; break;
             case 2: mensaje = "Grande"; break;
         }
-        Toast.makeText(this, "Tamaño cambiado a: " + mensaje, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Tamaño: " + mensaje, Toast.LENGTH_SHORT).show();
         recreate();
     }
 
     private void confirmarBorradoBD() {
         new AlertDialog.Builder(this)
                 .setTitle("Borrar Base de Datos")
-                .setMessage("¿Estás seguro de que deseas borrar TODOS los datos? Esta acción es irreversible.")
+                .setMessage("¿Estás seguro de que deseas borrar TODOS los datos?")
                 .setPositiveButton("Borrar", (dialog, which) -> {
                     boolean deleted = deleteDatabase("rickmorty_gen.db");
                     if (deleted) {

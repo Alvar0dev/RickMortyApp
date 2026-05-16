@@ -3,7 +3,7 @@ package com.example.rickmortyapp;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.core.graphics.Insets;
@@ -43,11 +43,14 @@ public class MainActivity extends MenuToolbar implements ElementoAdapter.OnItemC
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        View mainView = findViewById(R.id.main);
+        if (mainView != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
+        }
 
         dao = new ElementoDAO(this);
         recyclerView = findViewById(R.id.rv);
@@ -64,9 +67,11 @@ public class MainActivity extends MenuToolbar implements ElementoAdapter.OnItemC
         
         cargarDatosDeInternet();
 
-        fab.setOnClickListener(v -> {
-            startActivity(new Intent(this, FavoritosActivity.class));
-        });
+        if (fab != null) {
+            fab.setOnClickListener(v -> {
+                startActivity(new Intent(this, FavoritosActivity.class));
+            });
+        }
     }
 
     private void cargarDatosDeInternet() {
@@ -78,10 +83,10 @@ public class MainActivity extends MenuToolbar implements ElementoAdapter.OnItemC
                     adaptador.actualizarlista(descargados);
                 }
             }
-
             @Override
             public void onFailure(Call<ElementoResponse> call, Throwable t) {
-                Snackbar.make(findViewById(R.id.main), "Error de red", Snackbar.LENGTH_SHORT).show();
+                View main = findViewById(R.id.main);
+                if (main != null) Snackbar.make(main, "Error de red", Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -97,6 +102,7 @@ public class MainActivity extends MenuToolbar implements ElementoAdapter.OnItemC
                 Snackbar.make(findViewById(R.id.main), "Guardado en favoritos", Snackbar.LENGTH_SHORT).show();
             }
         }
+        adaptador.notifyDataSetChanged();
     }
 
     @Override
@@ -104,11 +110,13 @@ public class MainActivity extends MenuToolbar implements ElementoAdapter.OnItemC
         Intent intent = new Intent(this, DetalleActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("objeto", elemento);
-        bundle.putString("AtriString1", elemento.getAtriString1());
-        bundle.putString("AtriString2", elemento.getAtriString2());
-        bundle.putString("AtriString3", elemento.getAtriString3());
-        bundle.putString("AtriString4", elemento.getAtriString4());
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adaptador != null) adaptador.notifyDataSetChanged();
     }
 }

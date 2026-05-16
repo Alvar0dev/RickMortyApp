@@ -31,7 +31,6 @@ public class FormularioActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_formulario);
         
-        // Buscamos el contenedor principal (ID corregido en el XML a 'main_formulario')
         View mainView = findViewById(R.id.main_formulario);
         if (mainView != null) {
             ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
@@ -50,37 +49,31 @@ public class FormularioActivity extends AppCompatActivity {
         btnGuardar = findViewById(R.id.btnGuardar);
         imgDetalle = findViewById(R.id.imgDetalle);
 
-        if (getIntent().hasExtra("elemento")) {
-            elementoEditar = (Elemento) getIntent().getSerializableExtra("elemento");
-            mostrarDatosElemento();
+        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("elemento")) {
+            elementoEditar = (Elemento) getIntent().getExtras().getSerializable("elemento");
+            if (elementoEditar != null) {
+                mostrarDatosElemento();
+                btnGuardar.setText("Actualizar");
+            }
+        } else {
+            btnGuardar.setText("Guardar Nuevo");
         }
 
-        btnGuardar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                guardarCambios();
-            }
-        });
+        btnGuardar.setOnClickListener(v -> guardarCambios());
 
-        etImagenUrl.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    cargarImagenDesdeUrl(etImagenUrl.getText().toString());
-                }
+        etImagenUrl.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                cargarImagenDesdeUrl(etImagenUrl.getText().toString());
             }
         });
     }
 
     private void mostrarDatosElemento() {
-        if (elementoEditar != null) {
-            etNombre.setText(elementoEditar.getAtriString1());
-            etEmail.setText(elementoEditar.getAtriString2());
-            etImagenUrl.setText(elementoEditar.getAtriString3());
-            etTelefono.setText(elementoEditar.getAtriString4());
-            cargarImagenDesdeUrl(elementoEditar.getAtriString3());
-            btnGuardar.setText("Actualizar");
-        }
+        etNombre.setText(elementoEditar.getAtriString1());
+        etEmail.setText(elementoEditar.getAtriString2());
+        etImagenUrl.setText(elementoEditar.getAtriString3());
+        etTelefono.setText(elementoEditar.getAtriString4());
+        cargarImagenDesdeUrl(elementoEditar.getAtriString3());
     }
 
     private void cargarImagenDesdeUrl(String url) {
@@ -95,39 +88,30 @@ public class FormularioActivity extends AppCompatActivity {
 
     private void guardarCambios() {
         String nombre = etNombre.getText().toString().trim();
-        String email = etEmail.getText().toString().trim();
+        String atriString2 = etEmail.getText().toString().trim();
         String url = etImagenUrl.getText().toString().trim();
-        String telefono = etTelefono.getText().toString().trim();
+        String atriString4 = etTelefono.getText().toString().trim();
 
         if (nombre.isEmpty()) {
             Toast.makeText(this, "El nombre es obligatorio", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (elementoEditar != null) {
-            elementoEditar.setAtriString1(nombre);
-            elementoEditar.setAtriString2(email);
-            elementoEditar.setAtriString3(url);
-            elementoEditar.setAtriString4(telefono);
+        Elemento elemento = (elementoEditar != null) ? elementoEditar : new Elemento();
+        elemento.setAtriString1(nombre);
+        elemento.setAtriString2(atriString2);
+        elemento.setAtriString3(url);
+        elemento.setAtriString4(atriString4);
+        
+        if (elementoEditar == null) elemento.setAtriInt1(0);
 
-            int filas = db.actualizar(elementoEditar);
-            if (filas > 0) {
-                Toast.makeText(this, "Actualizado correctamente", Toast.LENGTH_SHORT).show();
-                finish();
-            }
+        long resultado = db.guardar(elemento);
+
+        if (resultado != -1) {
+            Toast.makeText(this, "Guardado con éxito", Toast.LENGTH_SHORT).show();
+            finish();
         } else {
-            Elemento nuevo = new Elemento();
-            nuevo.setAtriInt1(0);
-            nuevo.setAtriString1(nombre);
-            nuevo.setAtriString2(email);
-            nuevo.setAtriString3(url);
-            nuevo.setAtriString4(telefono);
-
-            long id = db.insertar(nuevo);
-            if (id != -1) {
-                Toast.makeText(this, "Guardado correctamente", Toast.LENGTH_SHORT).show();
-                finish();
-            }
+            Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show();
         }
     }
 }

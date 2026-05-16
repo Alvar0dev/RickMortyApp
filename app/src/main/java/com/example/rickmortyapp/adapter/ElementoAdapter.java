@@ -9,10 +9,12 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.rickmortyapp.R;
 import com.example.rickmortyapp.bbdd.ElementoDAO;
 import com.example.rickmortyapp.modelo.Elemento;
 import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,6 @@ public class ElementoAdapter extends RecyclerView.Adapter<ElementoAdapter.MyView
     public interface OnItemClickListener {
         void onFavoritoClick(Elemento elemento);
         void onItemClick(Elemento elemento);
-        
         default void onModificarClick(Elemento elemento) {}
         default void onBorrarClick(Elemento elemento) {}
     }
@@ -53,7 +54,7 @@ public class ElementoAdapter extends RecyclerView.Adapter<ElementoAdapter.MyView
         holder.tv2.setText(e.getAtriString2()); 
 
         if (e.getAtriString3() != null && !e.getAtriString3().isEmpty()) {
-            Picasso.get().load(e.getAtriString3()).into(holder.iv1);
+            Picasso.get().load(e.getAtriString3()).placeholder(R.mipmap.ic_launcher).into(holder.iv1);
         }
 
         if (esFavoritos) {
@@ -62,8 +63,6 @@ public class ElementoAdapter extends RecyclerView.Adapter<ElementoAdapter.MyView
         } else {
             holder.btnMenu.setVisibility(View.GONE);
             holder.btnFavorito.setVisibility(View.VISIBLE);
-            
-            // Lógica para encender/apagar la estrella
             if (dao.existePorApi(e.getAtriInt1())) {
                 holder.btnFavorito.setImageResource(android.R.drawable.btn_star_big_on);
             } else {
@@ -74,7 +73,6 @@ public class ElementoAdapter extends RecyclerView.Adapter<ElementoAdapter.MyView
         holder.btnMenu.setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(v.getContext(), holder.btnMenu);
             popup.getMenuInflater().inflate(R.menu.item_menu, popup.getMenu());
-            
             popup.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == R.id.menu_modificar) {
                     if (listener != null) listener.onModificarClick(e);
@@ -91,8 +89,7 @@ public class ElementoAdapter extends RecyclerView.Adapter<ElementoAdapter.MyView
         holder.btnFavorito.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onFavoritoClick(e);
-                // Refrescar el icono después de intentar guardar
-                notifyItemChanged(position);
+                notifyItemChanged(holder.getBindingAdapterPosition());
             }
         });
 
@@ -110,10 +107,10 @@ public class ElementoAdapter extends RecyclerView.Adapter<ElementoAdapter.MyView
         notifyDataSetChanged();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         public ImageButton btnFavorito, btnMenu;
-        TextView tv1, tv2;
-        ImageView iv1;
+        public TextView tv1, tv2;
+        public ImageView iv1;
 
         public MyViewHolder(@NonNull View v) {
             super(v);

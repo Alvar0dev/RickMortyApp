@@ -1,4 +1,4 @@
-package com.example.rickmortyapp.BBDD;
+package com.example.rickmortyapp.bbdd;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHelper extends SQLiteOpenHelper {
     public static final String DB_NAME = "rickmorty_gen.db";
-    public static final int DB_VERSION = 3; // Incrementamos versión para asegurar que se recrea la tabla
+    public static final int DB_VERSION = 3; 
     public static final String TABLE = "tabla_elementos";
 
     // Nombres de columnas genéricos

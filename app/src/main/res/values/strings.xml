@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RickMortyApplicacion</string>
+    <string name="btn_guardar">Guardar</string>
 </resources>

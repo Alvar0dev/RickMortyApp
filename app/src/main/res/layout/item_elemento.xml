@@ -22,11 +22,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="AtriString1"
+        android:layout_marginEnd="8dp"
+        android:text="Nombre"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/btnFavorito"
+        app:layout_constraintEnd_toStartOf="@+id/btnMenu"
         app:layout_constraintStart_toEndOf="@+id/tvString3"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,18 +36,32 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="AtriString2"
+        android:layout_marginEnd="8dp"
+        android:text="Estado"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/btnFavorito"
+        app:layout_constraintEnd_toStartOf="@+id/btnMenu"
         app:layout_constraintStart_toEndOf="@+id/tvString3"
         app:layout_constraintTop_toBottomOf="@+id/tvString1" />
+
+    <!-- Ambos botones al final. El adaptador mostrará uno u otro -->
+    <ImageButton
+        android:id="@+id/btnMenu"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@android:drawable/ic_menu_more"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/btnFavorito"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@android:drawable/btn_star_big_on"
+        android:src="@android:drawable/btn_star_big_off"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

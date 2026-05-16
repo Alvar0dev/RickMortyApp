@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,7 +15,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.rickmortyapp.BBDD.ElementoDAO;
+import com.example.rickmortyapp.bbdd.ElementoDAO;
 import com.example.rickmortyapp.modelo.Elemento;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;

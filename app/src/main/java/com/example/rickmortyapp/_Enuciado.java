@@ -28,24 +28,24 @@ package com.example.rickmortyapp;
 //
 //    Al pulsar el botón de guardar, el personaje debe registrarse en una base de datos local creando una subclase de SQLiteOpenHelper.
 //
-//    Debes sobrescribir obligatoriamente los métodos onCreate() (para crear la tabla mediante execSQL()) y onUpgrade().
+//    Debes sobrescribir obligatoriamente los metods onCreate() (para crear la tabla mediante execSQL()) y onUpgrade().
 //
-//    Utiliza el método insert() pasando un objeto ContentValues para evitar inyecciones SQL.
+//    Utiliza el metod insert() pasando un objeto ContentValues para evitar inyecciones SQL.
 //
 //            4. Navegación a Pantalla de Detalle (1 punto) - [Ref: PMDM08 - Intenciones]
 //
 //    Al pulsar sobre la tarjeta de un personaje, lanza un Intent explícito hacia una DetailActivity.
 //
-//    Utiliza un objeto Bundle con el método putExtras() para enviar los datos detallados del personaje (nombre, imagen, especie) a la nueva actividad.
+//    Utiliza un objeto Bundle con el metod putExtras() para enviar los datos detallados del personaje (nombre, imagen, especie) a la nueva actividad.
 //
 //            🚀 PARTE 2: Subir Nota (Hasta 8 puntos)
 //    Estas tareas demuestran tu dominio sobre la experiencia de usuario y componentes avanzados.
 //
 //5. Actividad de Favoritos (0.5 puntos)
 //
-//    Añade un menú en la ActionBar o un botón flotante en la pantalla principal que abra una nueva Activity .
+//     Añade un menú en la ActionBar o un botón flotante en la pantalla principal que abra una nueva Activity .
 //
-//    En esta Activity, utiliza el método query() o rawQuery() de SQLiteDatabase para recuperar todos los personajes guardados utilizando un Cursor, y muéstralos en un nuevo RecyclerView.
+//    En esta Activity, utiliza el méto do query() o rawQuery() de SQLiteDatabase para recuperar todos los personajes guardados utilizando un Cursor, y muéstralos en un nuevo RecyclerView.
 //
 //            6. Soporte Landscape / Pantalla Horizontal (0.5 puntos)
 //
@@ -80,9 +80,9 @@ package com.example.rickmortyapp;
 //
 //    Requisito 1: Utiliza el SensorManager para acceder al sensor de aceleración (TYPE_ACCELEROMETER), el cual mide las fuerzas aplicadas al dispositivo en los tres ejes (X, Y, Z).
 //
-//    Requisito 2: Registra tu Activity como SensorEventListener y sobrescribe el método onSensorChanged().
+//    Requisito 2: Registra tu Activity como SensorEventListener y sobrescribe el metod onSensorChanged().
 //
 //    Requisito 3: Implementa la lógica (aplicando si es necesario un filtro de paso bajo/alto) para detectar un movimiento fuerte de sacudida o "shake".
 //
-//    Requisito 4: Cuando el usuario agite físicamente el teléfono estando en la pantalla de Favoritos, debes ejecutar un método delete() en tu base de datos SQLite para vaciar la lista, y actualizar automáticamente el RecyclerView.
+//    Requisito 4: Cuando el usuario agite físicamente el teléfono estando en la pantalla de Favoritos, debes ejecutar un metod delete() en tu base de datos SQLite para vaciar la lista, y actualizar automáticamente el RecyclerView.
 //}
